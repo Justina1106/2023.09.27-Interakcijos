@@ -27,6 +27,11 @@ button2.textContent = '-'
 button2.id = 'decreaseButton'
 document.body.appendChild(button2)
 
+let button3 = document.createElement('button')
+button3.textContent = 'Reset'
+button3.id = 'resetButton'
+document.body.appendChild(button3)
+
 let button1 = document.createElement('button')
 button1.textContent = '+'
 button1.id = 'increaseButton'
@@ -35,12 +40,28 @@ document.body.appendChild(button1)
 let counterElement = document.getElementById('counter')
 let decreaseButton = document.getElementById('decreaseButton')
 let increaseButton = document.getElementById('increaseButton')
+let resetButton = document.getElementById('resetButton')
+
+let initialState = {
+    counter: 5,
+    decreaseButtonDisabled: false,
+    increaseButtonDisabled: false,
+    // counterColor: 'black'
+  }
+
+  function resetToInitialState() {
+    counterElement.textContent = initialState.counter
+    decreaseButton.disabled = initialState.decreaseButtonDisabled
+    increaseButton.disabled = initialState.increaseButtonDisabled
+    counterElement.style.color = initialState.counterColor
+  }
 
     function decreaseNumber() {
       let currentValue = parseInt(counterElement.textContent)
       if (!isNaN(currentValue)) {
         currentValue--
         counterElement.textContent = currentValue
+        updateButtonState(currentValue)
       }
     }
     
@@ -49,8 +70,40 @@ let increaseButton = document.getElementById('increaseButton')
         if (!isNaN(currentValue)) {
           currentValue++
           counterElement.textContent = currentValue
+          updateButtonState(currentValue)
         }
       }
   
       decreaseButton.addEventListener('click', decreaseNumber)
       increaseButton.addEventListener('click', increaseNumber)
+
+      function updateButtonState(currentValue) {
+        if (currentValue < 2) {
+          decreaseButton.disabled = true
+        } else {
+          decreaseButton.disabled = false
+        }
+        if (currentValue > 9) {
+            increaseButton.disabled = true
+        } else {
+          increaseButton.disabled = false
+        }
+        }
+
+        function updateColor(currentValue) {
+            if (currentValue >= 5) {
+              counterElement.style.color = 'green'
+            } else {
+              counterElement.style.color = 'red'
+            }
+          }
+  
+      decreaseButton.addEventListener('click', decreaseNumber)
+      increaseButton.addEventListener('click', increaseNumber)
+      resetButton.addEventListener('click', resetToInitialState)
+  
+      updateButtonState(parseInt(counterElement.textContent))
+      updateColor(parseInt(counterElement.textContent))
+
+
+            
